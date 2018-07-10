@@ -9,9 +9,9 @@ phases:
     commands:
       - echo "Starting build..."
       - docker build -t test-eks .
-      - docker tag test-eks 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v4
+      - docker tag test-eks 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
 
   post_build:
     commands:
       - echo "Pushing image to registry..."
-      - docker push 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v4
+      - docker push 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
