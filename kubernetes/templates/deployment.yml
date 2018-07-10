@@ -2,22 +2,22 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: helloworld-deployment
+  name: {{ .Values.name }}-deployment
   namespace: webdev
   labels:
-    app: helloworld
+    app: {{ .Values.name }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: helloworld
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: helloworld
+        app: {{ .Values.name }}
     spec:
       containers:
-        - name: helloworld-web
-          image: 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v4
+        - name: {{ .Values.name }}-web
+          image: {{ .Values.account_id }}.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
           ports:
             - containerPort: 8080

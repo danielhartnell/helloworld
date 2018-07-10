@@ -2,12 +2,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: helloworld-service
+  name: {{ .Values.name }}-service
   namespace: webdev
 spec:
   type: LoadBalancer
   selector:
-    app: helloworld
+    app: {{ .Values.name }}
   ports:
     - protocol: TCP
       port: 80
