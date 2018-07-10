@@ -15,7 +15,7 @@ phases:
       - docker build -t ${SERVICE_NAME} .
       - docker tag test-eks ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
 
-  test:
+  post_build:
     commands:
       - echo "Scanning container image with CoreOS Clair"
       - docker run -d --name db arminc/clair-db:latest
@@ -24,8 +24,5 @@ phases:
       - curl -L -O https://github.com/arminc/clair-scanner/releases/download/v8/clair-scanner_linux_amd64
       - chmod +x clair-scanner_linux_amd64
       - ./clair-scanner_linux_amd64 --ip=172.18.0.1 ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
-
-  post_build:
-    commands:
       - echo "Pushing image to registry..."
       - docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
