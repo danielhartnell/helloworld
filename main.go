@@ -8,7 +8,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Kubernetes still rocks v3\n")
+		fmt.Fprintf(w, "Kubernetes still rocks from master!\n")
                 fmt.Println("User requested: /")
 	})
 
