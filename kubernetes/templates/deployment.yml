@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
         - name: {{ .Values.name }}-web
-          image: {{ .Values.account_id }}.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
+          image: {{ .Values.account_id }}.dkr.ecr.us-west-2.amazonaws.com/test-eks:{{ .Values.commit }}
           ports:
             - containerPort: 8080
