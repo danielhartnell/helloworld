@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login --region ${AWS_REGION} --no-include-email | bash
+
+  build:
+    commands:
+      - echo "Starting build..."
+      - docker build -t test-eks .
+      - docker tag test-eks 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v4
+
+  post_build:
+    commands:
+      - echo "Pushing image to registry..."
+      - echo "docker push $IMAGE_REPOSITORY:$IMAGE_TAG"
+      - docker push 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v4
