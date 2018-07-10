@@ -2,6 +2,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - apt update && apt install -y curl
       - COMMIT_SHA=$CODEBUILD_RESOLVED_SOURCE_VERSION
       - ACCOUNT_ID=`echo $CODEBUILD_BUILD_ARN | awk -F ':' '{print $5}'`
       - SERVICE_NAME=test-eks
@@ -13,6 +14,16 @@ phases:
       - echo "Starting build..."
       - docker build -t ${SERVICE_NAME} .
       - docker tag test-eks ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
+
+  test:
+    commands:
+      - echo "Scanning container image with CoreOS Clair"
+      - docker run -d --name db arminc/clair-db:latest
+      - docker run -p 6060:6060 --link db:postgres -d --name clair arminc/clair-local-scan:v2.0.3
+      - sleep 10
+      - curl -L -O https://github.com/arminc/clair-scanner/releases/download/v8/clair-scanner_linux_amd64
+      - chmod +x clair-scanner_linux_amd64
+      - ./clair-scanner_linux_amd64 --ip=172.18.0.1 ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
 
   post_build:
     commands:
