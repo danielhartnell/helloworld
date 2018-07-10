@@ -7,7 +7,7 @@ phases:
 
   build:
     commands:
-      - echo "Found git commit SHA: $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo "Starting build..."
       - docker build -t test-eks .
       - docker tag test-eks 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
