@@ -2,17 +2,19 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - COMMIT_SHA=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - ACCOUNT_ID=`echo $CODEBUILD_BUILD_ARN | awk -F ':' '{print $5}'`
+      - SERVICE_NAME=test-eks
       - echo "Logging in to Amazon ECR..."
       - aws ecr get-login --region ${AWS_REGION} --no-include-email | bash
 
   build:
     commands:
-      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo "Starting build..."
-      - docker build -t test-eks .
-      - docker tag test-eks 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
+      - docker build -t ${SERVICE_NAME} .
+      - docker tag test-eks ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
 
   post_build:
     commands:
       - echo "Pushing image to registry..."
-      - docker push 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v5
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SERVICE_NAME}:$COMMIT_SHA
