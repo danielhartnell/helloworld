@@ -14,5 +14,4 @@ phases:
   post_build:
     commands:
       - echo "Pushing image to registry..."
-      - echo "docker push $IMAGE_REPOSITORY:$IMAGE_TAG"
       - docker push 787367611277.dkr.ecr.us-west-2.amazonaws.com/test-eks:v4
