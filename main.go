@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
@@ -11,8 +10,6 @@ func main() {
 		fmt.Fprintf(w, "Kubernetes still rocks from master (v2)!\n")
                 fmt.Println("User requested: /")
 	})
-
-	http.Handle("/metrics", promhttp.Handler())
 
 	http.ListenAndServe(":8080", nil)
 }
