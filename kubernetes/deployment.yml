@@ -3,7 +3,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: helloworld-deployment
-  namespace: webdev
+  namespace: default
   labels:
     app: helloworld
 spec:
